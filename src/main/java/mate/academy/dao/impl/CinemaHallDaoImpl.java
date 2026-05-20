@@ -2,50 +2,52 @@ package mate.academy.dao.impl;
 
 import java.util.List;
 import java.util.Optional;
-import mate.academy.dao.MovieDao;
+import mate.academy.dao.CinemaHallDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
-import mate.academy.model.Movie;
+import mate.academy.model.CinemaHall;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
-public class MovieDaoImpl implements MovieDao {
+public class CinemaHallDaoImpl implements CinemaHallDao {
     @Override
-    public Movie add(Movie movie) {
+    public CinemaHall add(CinemaHall cinemaHall) {
         Transaction transaction = null;
         Session session = null;
         try {
             session = openSession();
             transaction = session.beginTransaction();
-            session.persist(movie);
+            session.persist(cinemaHall);
             transaction.commit();
-            return movie;
+            return cinemaHall;
         } catch (Exception e) {
             transactionNullCheck(transaction);
-            throw new DataProcessingException("Could not insert movie " + movie, e);
+            throw new DataProcessingException("Could not insert cinema hall: " + cinemaHall, e);
         } finally {
             sessionNullCheck(session);
         }
     }
 
     @Override
-    public Optional<Movie> get(Long id) {
+    public Optional<CinemaHall> get(Long id) {
         try (Session session = openSession()) {
-            return Optional.ofNullable(session.get(Movie.class, id));
+            CinemaHall cinemaHall = session.get(CinemaHall.class, id);
+            return Optional.ofNullable(cinemaHall);
         } catch (Exception e) {
-            throw new DataProcessingException("Could not get a movie by id: " + id, e);
+            throw new DataProcessingException("Could not get cinema hall with id: " + id, e);
         }
     }
 
     @Override
-    public List<Movie> getAll() {
+    public List<CinemaHall> getAll() {
         try (Session session = openSession()) {
-            List<Movie> movieList = session.createQuery("from Movie", Movie.class).getResultList();
-            return movieList;
+            List<CinemaHall> cinemaHallList
+                    = session.createQuery("from CinemaHall", CinemaHall.class).getResultList();
+            return cinemaHallList;
         } catch (Exception e) {
-            throw new DataProcessingException("Could not get movie list from DB", e);
+            throw new DataProcessingException("Could not get cinema halls list from DB", e);
         }
     }
 
