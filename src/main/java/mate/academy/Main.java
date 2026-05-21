@@ -44,7 +44,7 @@ public class Main {
 
         List<MovieSession> movieSessionList
                 = movieSessionService
-                .findAvailableSessions(fastAndFuriousSession.getId(), DATE_EXAMPLE);
+                .findAvailableSessions(fastAndFurious.getId(), DATE_EXAMPLE);
         for (MovieSession movieSession : movieSessionList) {
             System.out.println(movieSession);
         }

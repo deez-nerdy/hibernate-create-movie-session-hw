@@ -45,12 +45,13 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     public List<MovieSession> findAvailableSession(Long movieId, LocalDate date) {
         try (Session session = openSession()) {
             List<MovieSession> movieSessionList = session.createQuery("from MovieSession m "
-                    + "where m.showTime = :date", MovieSession.class)
+                    + "where m.showTime = :date AND m.id = :movieId", MovieSession.class)
                     .setParameter("date", date)
+                    .setParameter("movieId", movieId)
                     .getResultList();
             return movieSessionList;
         } catch (Exception e) {
-            throw new RuntimeException("Could not get available session list from DB", e);
+            throw new DataProcessingException("Could not get available session list from DB", e);
         }
     }
 
