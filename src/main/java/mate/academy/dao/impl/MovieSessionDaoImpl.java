@@ -45,7 +45,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     public List<MovieSession> findAvailableSession(Long movieId, LocalDate date) {
         try (Session session = openSession()) {
             List<MovieSession> movieSessionList = session.createQuery("from MovieSession m "
-                    + "where m.showTime = :date AND m.id = :movieId", MovieSession.class)
+                    + "where m.showTime = :date AND m.movie.id = :movieId", MovieSession.class)
                     .setParameter("date", date)
                     .setParameter("movieId", movieId)
                     .getResultList();
